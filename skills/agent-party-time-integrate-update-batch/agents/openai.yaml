@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Party Time: Integrate Update Batch"
+  short_description: "集成并验证 Agent Party Time 更新批次，然后 Push 和部署"
+  default_prompt: "使用 $agent-party-time-integrate-update-batch 完成当前 Update Batch Execution。"
+policy:
+  allow_implicit_invocation: false

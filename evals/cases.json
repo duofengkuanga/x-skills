@@ -1,0 +1,28 @@
+{
+  "agent-party-time-repair-bug": {
+    "required": [
+      "Do not push or deploy.",
+      "Do not amend, squash, rebase, rewrite history, or force-update a ref.",
+      "Use non-interactive headless browser tests",
+      "Return only JSON that matches the supplied output Schema.",
+      "Do not create or replace the worktree."
+    ],
+    "forbidden": [
+      "force push",
+      "automatically input Y"
+    ]
+  },
+  "agent-party-time-integrate-update-batch": {
+    "required": [
+      "Integrate every candidate commit in the frozen order.",
+      "Do not use force push.",
+      "Do not poll, infer, or report the external Pipeline or deployment result.",
+      "If it requests confirmation, credentials, secrets, or other input, stop and return `FAILED`.",
+      "Do not create, replace, or switch the worktree."
+    ],
+    "forbidden": [
+      "automatically input Y",
+      "force push the target branch"
+    ]
+  }
+}

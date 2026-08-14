@@ -1,0 +1,9 @@
+{
+  "name": "x-skills",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node scripts/validate-skills.mjs && node scripts/run-evals.mjs && node scripts/run-sandbox-evals.mjs",
+    "test": "npm run check"
+  }
+}
