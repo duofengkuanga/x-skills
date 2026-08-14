@@ -8,7 +8,8 @@
       "Return only commit SHAs created by this repair, in creation order.",
       "Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms",
       "Return an empty commit array only when validation confirms that the target",
-      "Do not create or replace the worktree."
+      "Do not create or replace the worktree.",
+      "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
     "forbidden": [
       "force push",
@@ -21,7 +22,8 @@
       "Do not use force push.",
       "Do not poll, infer, or report the external Pipeline or deployment result.",
       "If it requests confirmation, credentials, secrets, or other input, stop and return `FAILED`.",
-      "Do not create, replace, or switch the worktree."
+      "Do not create, replace, or switch the worktree.",
+      "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
     "forbidden": [
       "automatically input Y",

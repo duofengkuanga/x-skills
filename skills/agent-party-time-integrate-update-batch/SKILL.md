@@ -37,6 +37,12 @@ If the worktree is unsafe, inconsistent, or cannot be verified, return `FAILED`.
 5. If a candidate cannot be integrated safely, return `FAILED`.
 6. If later evidence reports an external deployment failure, diagnose and correct the existing batch without changing its frozen membership or order.
 
+## Database changes
+
+- Never execute SQL, DDL, DML, migrations, or historical-data corrections. Do not preview by applying them or otherwise run them during Update.
+- If the integrated commit diff contains repository SQL files, the human operator is responsible for finding and executing them separately after deployment.
+- Do not add a database-specific state, confirmation step, SQL copy action, or database connection to this Skill.
+
 ## Use the repository runtime
 
 - Before tests, builds, or a local deployment command, inspect `.nvmrc`, `.node-version`, `.tool-versions`, and equivalent repository declarations.

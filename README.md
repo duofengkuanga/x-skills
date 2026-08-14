@@ -5,7 +5,9 @@ This repository contains the Codex Skills used by Agent Party Time Repair and Up
 ## Skills
 
 - `agent-party-time-repair-bug` repairs one Bug, validates the change, and creates ordinary local commits. It cannot push or deploy.
+  Backend repairs that need schema or historical-data changes must commit repository SQL files for a human to execute; the Skill never executes SQL.
 - `agent-party-time-integrate-update-batch` integrates a frozen Update Batch, validates it, performs an ordinary push, and handles the configured deployment mode.
+  It never executes database SQL; SQL files in the integrated diff remain a manual operator handoff.
 
 Both Skills require explicit invocation. Codex must not load them implicitly.
 

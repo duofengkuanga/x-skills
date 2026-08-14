@@ -21,3 +21,7 @@ Given a deployment command that requests terminal input, the Skill does not answ
 ## Rejected push
 
 Given an ordinary push rejection, the Skill returns `FAILED`. It does not force push or rewrite history.
+
+## Database SQL handoff
+
+Given an integrated commit containing repository SQL files, the Skill never executes them and leaves their execution to the human operator after deployment.

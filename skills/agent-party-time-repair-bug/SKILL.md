@@ -35,6 +35,15 @@ If the working directory is unsafe, inconsistent, or cannot be verified, return 
 5. Add or update focused tests when the repository provides a suitable test seam.
 6. Follow repository-specific implementation and validation rules.
 
+## Database changes
+
+When a backend repair requires a database schema change or historical-data correction:
+
+- Generate the required SQL as repository files, following the repository's existing SQL layout (for example, `sql/**/*.sql` or a root-level `*.sql`).
+- Commit the SQL together with the code fix in the ordinary local commit. A committed SQL file is the handoff for the human database operator.
+- Never execute SQL, DDL, DML, migrations, or historical-data corrections. Do not preview by applying them or otherwise run them yourself.
+- Do not add a database-specific completion state or require a database connection. Mention the manual database action factually in the structured result's changes or warnings when appropriate.
+
 ## Validate
 
 - Run checks required by repository documentation and checks directly relevant to the change.
