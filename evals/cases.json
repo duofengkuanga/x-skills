@@ -9,7 +9,8 @@
       "Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms",
       "Return an empty commit array only when validation confirms that the target",
       "Do not create or replace the worktree.",
-      "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
+      "Never execute SQL, DDL, DML, migrations, or historical-data corrections.",
+      "Return `manualOperations` for every manual database handoff."
     ],
     "forbidden": [
       "force push",

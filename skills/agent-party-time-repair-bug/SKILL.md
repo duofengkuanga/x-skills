@@ -42,7 +42,7 @@ When a backend repair requires a database schema change or historical-data corre
 - Generate the required SQL as repository files, following the repository's existing SQL layout (for example, `sql/**/*.sql` or a root-level `*.sql`).
 - Commit the SQL together with the code fix in the ordinary local commit. A committed SQL file is the handoff for the human database operator.
 - Never execute SQL, DDL, DML, migrations, or historical-data corrections. Do not preview by applying them or otherwise run them yourself.
-- Do not add a database-specific completion state or require a database connection. Mention the manual database action factually in the structured result's changes or warnings when appropriate.
+- Do not add a database-specific completion state or require a database connection. Return each SQL handoff as `{ "kind": "DATABASE_SQL", "paths": ["repository-relative.sql"] }` in `manualOperations`, using the exact repository-relative SQL paths committed by this repair. Return `manualOperations: []` when no manual database action is needed.
 
 ## Validate
 
@@ -80,6 +80,7 @@ For `COMPLETED`:
 - List all validations and their actual status.
 - List warnings. Use an empty array when there are none.
 - Return the exact verified SHA of every commit created by this repair.
+- Return `manualOperations` for every manual database handoff. Use `DATABASE_SQL` and the exact repository-relative SQL file paths; otherwise return an empty array.
 - Return an empty commit array only when validation confirms that the target
   branch already contains the required fix, `completionKind` is
   `TARGET_ALREADY_FIXED`, and no change or commit is needed.
@@ -90,6 +91,7 @@ For `FAILED`:
 - Identify the failed step and reason.
 - List completed and pending actions.
 - Do not invent commits, changes, validations, or warnings.
+- Return an empty `manualOperations` array.
 - Set success-only fields to the empty values required by the Schema.
 
 Do not claim that a file changed, a command ran, a test passed, or a commit exists without verifying it.

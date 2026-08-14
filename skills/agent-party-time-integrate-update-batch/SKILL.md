@@ -40,7 +40,6 @@ If the worktree is unsafe, inconsistent, or cannot be verified, return `FAILED`.
 ## Database changes
 
 - Never execute SQL, DDL, DML, migrations, or historical-data corrections. Do not preview by applying them or otherwise run them during Update.
-- If the integrated commit diff contains repository SQL files, the human operator is responsible for finding and executing them separately after deployment.
 - Do not add a database-specific state, confirmation step, SQL copy action, or database connection to this Skill.
 
 ## Use the repository runtime

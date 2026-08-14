@@ -29,4 +29,4 @@ Given a UI Bug without an available non-interactive browser test, the Skill runs
 
 ## Backend database handoff
 
-Given a backend Bug whose fix requires a schema change or historical-data correction, the Skill adds the required SQL file to the repair commit, does not execute it, and reports the manual handoff without inventing a database completion state.
+Given a backend Bug whose fix requires a schema change or historical-data correction, the Skill adds the required SQL file to the repair commit, does not execute it, and returns one `DATABASE_SQL` `manualOperations` entry containing the exact repository-relative SQL path without inventing a database completion state.
