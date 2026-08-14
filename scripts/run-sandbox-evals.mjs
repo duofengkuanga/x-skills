@@ -13,12 +13,13 @@ const root = mkdtempSync(join(tmpdir(), 'x-skills-eval-'));
 
 try {
   repairEval(join(root, 'repair'));
+  repairAlreadyFixedEval(join(root, 'repair-already-fixed'));
   updateCiCdEval(join(root, 'update-ci-cd'));
   updateLocalScriptEval(join(root, 'update-local-script'));
   updateInteractiveScriptEval(join(root, 'update-interactive-script'));
   updateValidationFailureEval(join(root, 'update-validation-failure'));
   updateRejectedPushEval(join(root, 'update-rejected-push'));
-  console.log('Passed 6 sandbox Git and deployment-mode evals.');
+  console.log('Passed 7 sandbox Git and deployment-mode evals.');
 } finally {
   rmSync(root, { recursive: true, force: true });
 }
@@ -51,6 +52,31 @@ function repairEval(directory) {
     throw new Error('Repair eval left uncommitted changes');
   if (!/^[a-f0-9]{40}$/u.test(commit))
     throw new Error('Repair eval did not create a real local commit');
+}
+
+function repairAlreadyFixedEval(directory) {
+  const { remote } = initializeRepository(directory);
+  writeFileSync(join(directory, 'behavior.txt'), 'fixed\n');
+  writeFileSync(
+    join(directory, 'test.mjs'),
+    "import { readFileSync } from 'node:fs';\nif (readFileSync('behavior.txt', 'utf8') !== 'fixed\\n') process.exit(1);\n",
+  );
+  git(['add', 'behavior.txt', 'test.mjs'], directory);
+  git(['commit', '-m', 'fix: repair behavior'], directory);
+  git(['branch', '-M', 'main'], directory);
+  git(['push', '-u', 'origin', 'main'], directory);
+  git(['checkout', '-b', 'apt/repair/bug-1', 'origin/main'], directory);
+  const headBefore = git(['rev-parse', 'HEAD'], directory);
+  const remoteBefore = git(['rev-parse', 'refs/heads/main'], remote);
+
+  run(['test.mjs'], directory);
+
+  if (git(['rev-parse', 'HEAD'], directory) !== headBefore)
+    throw new Error('Already-fixed Repair eval created a commit');
+  if (git(['status', '--porcelain'], directory))
+    throw new Error('Already-fixed Repair eval changed the worktree');
+  if (git(['rev-parse', 'refs/heads/main'], remote) !== remoteBefore)
+    throw new Error('Already-fixed Repair eval changed the remote ref');
 }
 
 function updateCiCdEval(directory) {

@@ -48,12 +48,14 @@ If the working directory is unsafe, inconsistent, or cannot be verified, return 
 
 ## Commit
 
-- Create ordinary local Git commits for the completed repair.
+- Create ordinary local Git commits for changes made by this repair.
+- If the target branch already contains the required fix and this repair makes
+  no changes, do not reuse an existing commit or create an empty commit.
 - Do not push or deploy.
 - Do not amend, squash, rebase, rewrite history, or force-update a ref.
 - Do not remove or reset unrelated work.
 - Do not leave changes from a successful repair uncommitted.
-- Return commit SHAs in creation order.
+- Return only commit SHAs created by this repair, in creation order.
 
 ## Return the result
 
@@ -61,11 +63,17 @@ Return only JSON that matches the supplied output Schema.
 
 For `COMPLETED`:
 
+- Set `completionKind` to `CHANGES_COMMITTED` when this repair created commits.
+- Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms
+  that the target branch already contains the required fix.
 - Provide a factual summary.
 - List the changes.
 - List all validations and their actual status.
 - List warnings. Use an empty array when there are none.
-- Return at least one commit SHA.
+- Return the exact verified SHA of every commit created by this repair.
+- Return an empty commit array only when validation confirms that the target
+  branch already contains the required fix, `completionKind` is
+  `TARGET_ALREADY_FIXED`, and no change or commit is needed.
 - Set failure-only fields to the empty or null values required by the Schema.
 
 For `FAILED`:

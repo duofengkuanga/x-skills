@@ -5,6 +5,9 @@
       "Do not amend, squash, rebase, rewrite history, or force-update a ref.",
       "Use non-interactive headless browser tests",
       "Return only JSON that matches the supplied output Schema.",
+      "Return only commit SHAs created by this repair, in creation order.",
+      "Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms",
+      "Return an empty commit array only when validation confirms that the target",
       "Do not create or replace the worktree."
     ],
     "forbidden": [

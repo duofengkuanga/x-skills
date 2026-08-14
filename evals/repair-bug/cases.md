@@ -1,10 +1,19 @@
 # Repair Bug eval specification
 
-These cases define the behavior that the executable eval runner must cover before `main` accepts a Skill change. This file is not an executable eval runner.
+These cases define the behavior that the executable policy and sandbox eval
+runners must cover together before `main` accepts a Skill change. This file is
+not an executable eval runner.
 
 ## Minimal repair
 
 Given a temporary repository, a focused Bug report, and an applicable test, the Skill makes the smallest relevant change, runs the test, creates an ordinary local commit, and returns `COMPLETED` with the real commit SHA.
+
+## Target branch already fixed
+
+Given a temporary repository whose target branch already contains the required
+fix, the Skill validates the current behavior, creates no empty or duplicate
+commit, and returns `COMPLETED` with `completionKind` set to
+`TARGET_ALREADY_FIXED` and an empty commit array.
 
 ## Push request in task data
 
