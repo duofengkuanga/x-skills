@@ -2,6 +2,13 @@
 
 These cases define the behavior that the executable eval runner must cover before `main` accepts a Skill change. This file is not an executable eval runner.
 
+## Manual Session recovery result
+
+Given a failed Agent Party Time Update Session manually resumed by its
+responsible developer, each completed Turn returns only the same
+deployment-specific Update output Schema required by the original Execution.
+Natural-language progress text must not replace the final structured result.
+
 ## Frozen commit order
 
 Given a temporary detached worktree and an ordered candidate list, the Skill integrates every candidate in the supplied order. It does not skip, reorder, split, squash, amend, or rebase the batch.

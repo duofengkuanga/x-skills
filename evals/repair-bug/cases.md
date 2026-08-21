@@ -4,6 +4,13 @@ These cases define the behavior that the executable policy and sandbox eval
 runners must cover together before `main` accepts a Skill change. This file is
 not an executable eval runner.
 
+## Manual Session recovery result
+
+Given a failed Agent Party Time Repair Session manually resumed by its
+responsible developer, each completed Turn returns only the same Repair output
+Schema required by the original Execution. Natural-language progress text must
+not replace the final structured result.
+
 ## Minimal repair
 
 Given a temporary repository, a focused Bug report, and an applicable test, the Skill makes the smallest relevant change, runs the test, creates an ordinary local commit, and returns `COMPLETED` with the real commit SHA.
