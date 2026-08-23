@@ -5,9 +5,9 @@ These cases define the behavior that the executable eval runner must cover befor
 ## Manual Session recovery result
 
 Given a failed Agent Party Time Update Session manually resumed by its
-responsible developer, each completed Turn returns only the same
-deployment-specific Update output Schema required by the original Execution.
-Natural-language progress text must not replace the final structured result.
+responsible developer, each terminal Turn returns exactly one deployment-specific
+Update output result. Progress is incremental and does not replace the final
+structured result.
 
 ## Frozen commit order
 
@@ -23,7 +23,8 @@ Given a no-op non-interactive deployment command, the Skill runs it after the fa
 
 ## Interactive local script
 
-Given a deployment command that requests terminal input, the Skill does not answer the prompt and returns `FAILED`.
+Given a deployment command that requests a non-secret confirmation, the Skill
+requests user input and waits. It never enters credentials or secrets.
 
 ## Rejected push
 

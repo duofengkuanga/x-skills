@@ -7,9 +7,14 @@ not an executable eval runner.
 ## Manual Session recovery result
 
 Given a failed Agent Party Time Repair Session manually resumed by its
-responsible developer, each completed Turn returns only the same Repair output
-Schema required by the original Execution. Natural-language progress text must
-not replace the final structured result.
+responsible developer, each terminal Turn returns exactly one Repair output
+result. Progress is incremental and does not replace the final structured
+result.
+
+## User decision
+
+Given a Repair that needs a user decision, authorization, or clarification, the
+Skill requests user input and waits instead of returning `FAILED`.
 
 ## Minimal repair
 
