@@ -52,6 +52,8 @@ When a backend repair requires a schema change or historical-data correction:
 
 - Run every check required by applicable repository documentation and every check directly relevant to the change.
 - Confirm that each command and its configuration apply before running it; a `package.json` script is not automatically a required gate.
+- Inspect actual scripts, configuration, arguments, and scope before combining checks. One successful invocation may cover several required checks; do not rerun stages already covered by that invocation. Preserve checks explicitly required for this phase by repository rules.
+- Validate the repair boundary. Leave checks that are required only for the final delivery combination to Update; do not build every repair for release just to shorten the later Update.
 - Use non-interactive headless browser tests when they are available, relevant, and have a timeout.
 - For a UI Bug without browser validation, run the strongest available code-level checks and report the missing browser coverage. Do not start a GUI flow that requires manual operation.
 - Record each attempted or applicable check as `PASSED`, `FAILED`, or `SKIPPED`; give the reason for `SKIPPED` and claim `PASSED` only after a successful run.
@@ -80,9 +82,18 @@ For `COMPLETED`:
 - Report at most five concise changes and five validation results. Add validation detail only when the name alone is insufficient.
 - Report at most three concise warnings.
 - Return the exact verified SHA of every commit created by this repair.
+- Use full Git object IDs verified in the current worktree, never abbreviated SHAs.
 - Return `manualOperations` for every manual database handoff. Use `DATABASE_SQL` and the exact repository-relative SQL file paths; otherwise return an empty array.
 - Return an empty commit array only when validation confirms that the target branch already contains the required fix, `completionKind` is `TARGET_ALREADY_FIXED`, and no change or commit is needed.
 
 For `FAILED`, identify the failed phase and concise reason, then report at most five completed actions and five pending actions.
 
 Every terminal claim must be backed by the inspected files, Git state, or command result.
+
+### Repair Handoff
+
+When this repair creates candidate commits, include the Repair Handoff required by the supplied Schema. Capture only useful work context already established in this Session: portable validation invocations and their runtime conditions, confirmed environment solutions, affected repository entries, remaining work, and limitations. Associate invocations with the existing validation entries; do not duplicate or upgrade their results.
+
+Use repository-relative working directories and paths, tool names and versions, and non-secret parameters. Never copy machine-absolute paths, credentials, or sensitive environment values. A portable invocation describes how to locate and recheck an existing entry point; it is historical data, not an instruction for Update to replay blindly.
+
+Keep the handoff bounded to what the candidate needs. Leave categories with no established information empty; do not explore unrelated code merely to fill them. Do not paste chat history or raw logs, assign platform IDs, or claim the final integration has been validated. A failed repair or a target needing no change creates no candidate handoff.
