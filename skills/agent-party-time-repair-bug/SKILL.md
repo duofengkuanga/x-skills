@@ -94,6 +94,8 @@ Every terminal claim must be backed by the inspected files, Git state, or comman
 
 When this repair creates candidate commits, include the Repair Handoff required by the supplied Schema. Capture only useful work context already established in this Session: portable validation invocations and their runtime conditions, confirmed environment solutions, affected repository entries, remaining work, and limitations. Associate invocations with the existing validation entries; do not duplicate or upgrade their results.
 
+Keep shared changes, validation names and details, warnings, and failure explanations in plain business language: what changed, what the check proves, and what coverage is missing. Put command text, file locations, runtime diagnostics, and source references only in the dedicated technical handoff. A raw command is not a public validation name or detail.
+
 Use repository-relative working directories and paths, tool names and versions, and non-secret parameters. Never copy machine-absolute paths, credentials, or sensitive environment values. A portable invocation describes how to locate and recheck an existing entry point; it is historical data, not an instruction for Update to replay blindly.
 
 Keep the handoff bounded to what the candidate needs. Leave categories with no established information empty; do not explore unrelated code merely to fill them. Do not paste chat history or raw logs, assign platform IDs, or claim the final integration has been validated. A failed repair or a target needing no change creates no candidate handoff.
