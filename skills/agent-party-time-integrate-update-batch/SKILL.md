@@ -82,8 +82,9 @@ For `CI_CD`:
 
 For `LOCAL_SCRIPT`:
 
-- After the ordinary push succeeds, run only the exact command in `deployment.command`, unchanged and without interactive input.
-- If it requests a non-secret confirmation or other business decision, request user input and wait. Never request, receive, or expose credentials or secrets; return `FAILED` when they are required but unavailable locally.
+- Treat the frozen `LOCAL_SCRIPT` configuration as authorization to deploy this batch to its configured environment. After the ordinary push succeeds, run the exact `deployment.command` without asking for deployment approval again.
+- Inspect the script's confirmation behavior before starting it. Automatically answer yes to a non-secret prompt that only confirms deployment to the configured environment, such as “是否部署到 AI测试环境？”. Keep the configured command unchanged; use a controlled input stream or terminal session to answer that specific prompt. This confirmation requires no human interaction.
+- Request user input only for a new decision outside that authorization, such as changing the target environment. Match each prompt before answering; never pipe an unbounded `yes` stream or blindly accept later prompts. Never request, receive, or expose credentials or secrets; return `FAILED` when they are required but unavailable locally.
 - Do not substitute another deployment command.
 - Return `COMPLETED` only after the exact command succeeds.
 

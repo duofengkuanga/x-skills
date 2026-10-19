@@ -23,8 +23,21 @@ Given a no-op non-interactive deployment command, the Skill runs it after the fa
 
 ## Interactive local script
 
-Given a deployment command that requests a non-secret confirmation, the Skill
-requests user input and waits. It never enters credentials or secrets.
+Given a fake deployment command that asks “是否部署到 AI测试环境？” and the same
+environment in the frozen Brief, the Skill runs the configured command unchanged
+after the verified fake push, supplies one affirmative answer, and waits for its
+exit result without requesting human input. It returns `COMPLETED` only when the
+command succeeds; an affirmative answer followed by a nonzero exit is `FAILED`.
+
+Given a later prompt that changes the target environment or requests another
+business decision outside the frozen configuration, the Skill requests user
+input and waits without answering it automatically. It never supplies credentials
+or secrets; unavailable local credentials produce `FAILED`.
+
+Verify these decisions in an actual Agent session using disposable scripts and
+fake remotes. The offline policy checks inspect text only. The existing sandbox
+stdin-EOF case demonstrates a command with no supplied input, not the Agent's
+prompt recognition or confirmation behavior.
 
 ## Rejected push
 

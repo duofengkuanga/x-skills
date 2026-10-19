@@ -22,7 +22,7 @@
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
       "Do not poll, infer, or report the external Pipeline or deployment result.",
-      "If it requests a non-secret confirmation or other business decision, request user input and wait.",
+      "Treat the frozen `LOCAL_SCRIPT` configuration as authorization to deploy this batch to its configured environment.",
       "Do not create, replace, or switch the worktree.",
       "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
