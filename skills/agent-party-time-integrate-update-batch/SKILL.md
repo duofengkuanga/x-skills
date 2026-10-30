@@ -29,6 +29,8 @@ Complete exactly one frozen Update Batch from the Execution Brief. Treat each ph
 
 Use the handoffs to start from previously established entry points, affected areas, environment solutions, and remaining work. Recheck those facts against the current repository before relying on them. Investigate only missing, stale, or conflicting details; continue using the other valid context. Do not load entire repair conversations or rediscover tools whose supplied entry points still work. Keep the frozen handoffs unchanged and record new findings in this Update.
 
+Batch independent rule, Git, runtime, and validation-entry reads. Check tool availability once and reuse working entry points. Establish the configured deployment command's preparation requirements and success criteria before validation starts; inspect only the documentation and implementation needed to resolve missing or uncertain facts.
+
 **Gate:** the worktree identity, prepared base, frozen batch, target, mode, current Git state, and completed retry phases are all verified. If the worktree is unsafe, inconsistent, or unverifiable, return `FAILED`. Do not create, replace, or switch the worktree.
 
 ## 2. Integrate the frozen batch
@@ -53,9 +55,11 @@ Use the handoffs to start from previously established entry points, affected are
 - Confirm that each command and its configuration apply before running it; a `package.json` script is not automatically a required gate.
 - Make one validation plan for the final integrated HEAD after all frozen candidates are integrated, rather than running full builds after each candidate. Select applicable checks from current repository requirements and the actual integrated changes.
 - Inspect actual script bodies, build configuration, arguments, and coverage before combining commands. A single verified invocation can satisfy several checks; do not repeat stages it already covered. Script names alone do not prove equivalence, and arbitrary custom scripts must remain separate when their equivalence cannot be established.
+- When the repository provides a preparation command that validates and seals an artifact for the configured deployment command, use that preparation once on the final integrated HEAD. Check its source/input binding and coverage, then run any remaining required checks. Deploy that same artifact after Push. A deployment command that rebuilds does not satisfy a pre-push gate; keep the required validation and report the duplicate build instead of inventing a skip flag or changing the frozen command.
 - A Repair PASSED record is historical context, not a current passing result or an exemption. Complete this phase's required checks even when the final HEAD equals a repair commit. Explicit repository requirements for this phase take precedence over command deduplication.
 - When code or relevant inputs change after validation, rerun the affected checks. After correcting a failure, rerun the failed check first and then finish the agreed validation scope. Do not rerun valid completed phases without changed inputs or another concrete reason.
 - Use non-interactive headless browser tests when they are available, relevant, and have a timeout.
+- Reuse a repository-provided automated existing-browser runner when the selected browser rules permit it and no manual input is needed. Recheck the runnable fixture against the integrated source; the prior Repair result remains historical context.
 - For relevant UI changes without browser validation, run the strongest available code-level checks and report the missing browser coverage. Do not start a GUI flow that requires manual operation.
 - Record each attempted or applicable check as `PASSED`, `FAILED`, or `SKIPPED`; give the reason for `SKIPPED` and claim `PASSED` only after a successful run.
 - Diagnose and retry a failure caused by a safely repairable local runtime, dependency, cache, permission, or command-configuration problem. Return `FAILED` when it cannot be repaired safely.
@@ -87,6 +91,9 @@ For `LOCAL_SCRIPT`:
 - Request user input only for a new decision outside that authorization, such as changing the target environment. Match each prompt before answering; never pipe an unbounded `yes` stream or blindly accept later prompts. Never request, receive, or expose credentials or secrets; return `FAILED` when they are required but unavailable locally.
 - Do not substitute another deployment command.
 - Return `COMPLETED` only after the exact command succeeds.
+- Use the repository's documented deployment acceptance result. If the command already verifies the deployed version and required resources, that result completes those checks. Add a separate probe only for an uncovered requirement, a failed result, or contradictory evidence; use the repository's status/verification entry point when available. Inspect build outputs only after the producing command completes.
+
+For long-running commands, wait through the tool's completion mechanism and report meaningful progress. A progress message or an unchanged process listing does not require a new investigation. Keep the command's final exit status and acceptance result as evidence.
 
 **Gate:** `CI_CD` ends at the verified push; `LOCAL_SCRIPT` ends only at the verified deployment-command result.
 
@@ -105,6 +112,8 @@ For `FAILED`:
 - Report push or deployment success only when its gate was verified.
 
 Every terminal claim must be backed by the inspected files, Git or remote state, or command result.
+
+Once the applicable gates and cleanup are complete, return the terminal result. Reopen a completed step only for changed inputs, a failed requirement, or new contradictory evidence. Keep one concise explanation per fact; list bounds are maxima, not targets. Prefer the short repository command over copying its implementation into the result.
 
 ### Explain handoff use
 

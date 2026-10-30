@@ -25,6 +25,8 @@ Complete exactly one Bug from the Execution Brief. Treat each phase boundary bel
 4. Read the expected and actual behavior, feedback, attachments, and any evidence from an earlier attempt.
 5. Inspect the relevant implementation and test seam before editing.
 
+Batch independent rule, Git, runtime, and validation-entry reads. Check tool availability once; use the working repository entry points and available search tools for the rest of the Session.
+
 **Gate:** the worktree identity, current Git state, Bug boundary, available evidence, and unrelated work to preserve are all accounted for. If the worktree is unsafe, inconsistent, or unverifiable, return `FAILED`. Do not create or replace the worktree.
 
 ## 2. Diagnose and repair
@@ -54,7 +56,9 @@ When a backend repair requires a schema change or historical-data correction:
 - Confirm that each command and its configuration apply before running it; a `package.json` script is not automatically a required gate.
 - Inspect actual scripts, configuration, arguments, and scope before combining checks. One successful invocation may cover several required checks; do not rerun stages already covered by that invocation. Preserve checks explicitly required for this phase by repository rules.
 - Validate the repair boundary. Leave checks that are required only for the final delivery combination to Update; do not build every repair for release just to shorten the later Update.
+- Start with the repository's executable regression entry points. Extend an existing fixture for the affected behavior; when a new fixture is necessary and belongs to the repair scope, keep it runnable in the repository so Update can use it. A temporary page proves only its stated coverage and must not be presented as a reusable validation entry point.
 - Use non-interactive headless browser tests when they are available, relevant, and have a timeout.
+- An automated runner using an existing browser is also suitable when repository or user rules require it and it completes without manual input. Respect the selected browser connection; report unavailable coverage when it cannot run.
 - For a UI Bug without browser validation, run the strongest available code-level checks and report the missing browser coverage. Do not start a GUI flow that requires manual operation.
 - Record each attempted or applicable check as `PASSED`, `FAILED`, or `SKIPPED`; give the reason for `SKIPPED` and claim `PASSED` only after a successful run.
 
@@ -89,6 +93,8 @@ For `COMPLETED`:
 For `FAILED`, identify the failed phase and concise reason, then report at most five completed actions and five pending actions.
 
 Every terminal claim must be backed by the inspected files, Git state, or command result.
+
+Once required validation, commit verification, and cleanup are complete, return the terminal result. Reopen a completed step only for changed inputs, a failed requirement, or new contradictory evidence. Keep one concise explanation per fact; list bounds are maxima, not targets. Prefer the short repository command over copying its implementation into the result.
 
 ### Repair Handoff
 
