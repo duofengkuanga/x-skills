@@ -1,9 +1,9 @@
 ---
-name: agent-party-time-integrate-update-batch
+name: XUpdate
 description: Integrate one frozen Agent Party Time Update Batch in an xapt detached worktree, validate it, push it normally, and apply its configured CI_CD or LOCAL_SCRIPT deployment mode.
 ---
 
-# Integrate an Agent Party Time Update Batch
+# XUpdate
 
 Complete exactly one frozen Update Batch from the Execution Brief. Treat each phase boundary below as a gate: advance only when its completion criterion is met.
 
@@ -26,6 +26,7 @@ Complete exactly one frozen Update Batch from the Execution Brief. Treat each ph
 3. Inspect HEAD and status for unexpected changes or an incomplete Git operation.
 4. Read the frozen candidates and order, target branch, environment, deployment mode, previous result, and new external evidence.
 5. Read each candidate's frozen Repair Handoffs. Preserve their per-repair commit relationships; a later repair's validation does not cover every earlier candidate. Stop with a specific contract failure if a handoff is missing or its commits conflict with the frozen candidates. Do not reconstruct missing handoffs from arbitrary sessions or logs.
+6. Verify that every Bug's candidate range has the completed `gitnexus-review` evidence supplied by `XBugRepaire`. Check its base/head, verdict, covered scenarios, and limitations against the frozen commits. Missing or mismatched evidence is a specific review failure, not permission to skip a Bug. Record the prepared target HEAD as the batch review base before integration.
 
 Use the handoffs to start from previously established entry points, affected areas, environment solutions, and remaining work. Recheck those facts against the current repository before relying on them. Investigate only missing, stale, or conflicting details; continue using the other valid context. Do not load entire repair conversations or rediscover tools whose supplied entry points still work. Keep the frozen handoffs unchanged and record new findings in this Update.
 
@@ -65,6 +66,12 @@ Batch independent rule, Git, runtime, and validation-entry reads. Check tool ava
 - Diagnose and retry a failure caused by a safely repairable local runtime, dependency, cache, permission, or command-configuration problem. Return `FAILED` when it cannot be repaired safely.
 
 **Gate:** every required check passed and any unavailable coverage is explicit. Do not continue to push after a required validation fails.
+
+### Review the integrated result
+
+`XBugRepaire` owns the mandatory review of each Bug. Run `$gitnexus-review` once for the final batch when combining independently reviewed repair ranges, integrating onto a different target state, resolving conflicts, or adding corrections during Update. Read and execute the installed Skill against the explicit `<prepared target HEAD>..<final integrated HEAD>` range in the current detached worktree. Select the exact repository and index for that head. A single unchanged repair range may reuse its review only when its base, final tree, relevant inputs, and preserved evidence match the integrated result; document that equivalence in handoff use.
+
+Resolve confirmed integration defects and material coverage gaps, rerun affected checks, and review the changed final range before Push. Missing review dependencies, missing provenance, or a verdict other than `READY` ends Update as `FAILED` before Push. Preserve the original frozen handoffs; record the final review and any newly derived regression scenarios in this Update's validation and technical handoff-use fields. The Skill's review is an intermediate result, not a replacement for the caller-owned terminal JSON.
 
 ## 4. Push
 

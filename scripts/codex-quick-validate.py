@@ -10,6 +10,8 @@ import yaml
 
 MAX_SKILL_NAME_LENGTH = 64
 ALLOWED_PROPERTIES = {"name", "description", "license", "allowed-tools", "metadata"}
+# User-selected invocation names, accepted by the Codex skill loader.
+EXPLICIT_SKILL_NAMES = {"XBugRepaire", "XUpdate"}
 
 
 def validate_skill(skill_path: str) -> tuple[bool, str]:
@@ -32,7 +34,10 @@ def validate_skill(skill_path: str) -> tuple[bool, str]:
         return False, f"Unexpected frontmatter keys: {', '.join(sorted(unexpected))}"
     name = frontmatter.get("name")
     description = frontmatter.get("description")
-    if not isinstance(name, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name):
+    if not isinstance(name, str) or (
+        name not in EXPLICIT_SKILL_NAMES
+        and not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", name)
+    ):
         return False, "Invalid Skill name"
     if len(name) > MAX_SKILL_NAME_LENGTH:
         return False, "Skill name is too long"

@@ -1,6 +1,6 @@
 export const skillNames = [
-  'agent-party-time-repair-bug',
-  'agent-party-time-integrate-update-batch',
+  'XBugRepaire',
+  'XUpdate',
 ];
 
 export function parseFrontmatter(text, file) {

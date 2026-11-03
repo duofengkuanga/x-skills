@@ -1,9 +1,9 @@
 ---
-name: agent-party-time-repair-bug
-description: "Repair one Agent Party Time Bug from an xapt Execution Brief: diagnose it, make the smallest valid fix, validate it, and create ordinary local commits without pushing or deploying."
+name: XBugRepaire
+description: "Repair one Agent Party Time Bug from an xapt Execution Brief, validate it, create local commits, and run gitnexus-review before returning a successful repair."
 ---
 
-# Repair an Agent Party Time Bug
+# XBugRepaire
 
 Complete exactly one Bug from the Execution Brief. Treat each phase boundary below as a gate: advance only when its completion criterion is met.
 
@@ -22,10 +22,11 @@ Complete exactly one Bug from the Execution Brief. Treat each phase boundary bel
 1. Read every applicable `AGENTS.md` and the repository documentation relevant to the Bug.
 2. Verify that the current directory is the Git worktree prepared by xapt.
 3. Inspect the current branch, HEAD, status, and existing candidate commits. Preserve unrelated changes and commits.
+   Record the full starting HEAD as this attempt's review base. On recovery, recover that original base from the prior execution evidence; the latest HEAD is not a replacement base.
 4. Read the expected and actual behavior, feedback, attachments, and any evidence from an earlier attempt.
 5. Inspect the relevant implementation and test seam before editing.
 
-Batch independent rule, Git, runtime, and validation-entry reads. Check tool availability once; use the working repository entry points and available search tools for the rest of the Session.
+Batch independent rule, Git, runtime, and validation-entry reads. Check tool availability once, including the installed `gitnexus-review` Skill and GitNexus tools; use the working repository entry points for the rest of the Session. Missing review dependencies end the repair as `FAILED` with the missing dependency and next action; self-review does not substitute for invoking the Skill.
 
 **Gate:** the worktree identity, current Git state, Bug boundary, available evidence, and unrelated work to preserve are all accounted for. If the worktree is unsafe, inconsistent, or unverifiable, return `FAILED`. Do not create or replace the worktree.
 
@@ -75,7 +76,21 @@ When a backend repair requires a schema change or historical-data correction:
 
 **Gate:** each repair change and database handoff is covered by a verified new commit, or the validated target needed no change. Unrelated work remains intact.
 
-## 5. Return the terminal result
+## 5. Review every Bug
+
+After validation and local commits, read and execute the installed `$gitnexus-review` Skill against the explicit two-dot range `<starting HEAD>..<final HEAD>` for this Bug. Invoke it for every Bug, including a target already fixed: use the exact empty range in that case and retain the original Bug's successful behavior check. Never let implicit PR or default-branch selection choose the review surface.
+
+Supply the Bug's expected behavior, exact base and head, and the current worktree. Select the exact repository path and branch index; verify graph paths against source. Let `gitnexus-review` own its graph, source, test-coverage, and applicable data-flow passes. Its review is an intermediate result; the caller-owned JSON remains the only terminal Execution Outcome.
+
+Separate original acceptance scenarios from derived regression scenarios. A derived scenario must have a concrete link from this diff to a reachable behavior; a caller alone is not a confirmed regression. Attribute a new defect only with evidence of behavior changed by this repair, using before/after reproduction when feasible. Account for all changed files, including changes the graph does not map, and disclose uncovered analysis or validation. Zero findings never prove absence of unknown risks.
+
+Resolve confirmed defects and material coverage gaps before returning success. If fixes change the reviewed code, repeat the relevant validation, create ordinary additional commits, and rerun the Skill on the updated full range. Preserve unrelated changes and candidate history. If the Skill cannot run, the original base cannot be established, or the review cannot reach `READY`, return `FAILED` with the unresolved reason rather than claiming a completed review.
+
+Record the review as a business-readable validation result. For committed repairs, preserve its exact base/head, verdict, evidence-backed original and derived scenarios, and remaining coverage limitations in the existing technical Repair Handoff fields. Follow their Schema bounds; consolidate related evidence and state any omitted detail rather than silently treating an incomplete inventory as complete. Keep file locations and source references out of shared business summaries.
+
+**Gate:** this Bug has an actual completed `gitnexus-review` for the final unchanged range, no unresolved confirmed defects or material coverage gaps, and explicit coverage limitations. A retry may reuse that completed review only after verifying the same base, head, relevant inputs, and preserved evidence.
+
+## 6. Return the terminal result
 
 Return exactly one terminal JSON result that matches the supplied output Schema. The Schema is owned by the caller; do not reproduce its field list, types, or placeholder values.
 

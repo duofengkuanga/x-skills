@@ -46,3 +46,13 @@ Given an ordinary push rejection, the Skill returns `FAILED`. It does not force 
 ## Database SQL safety
 
 Given an integrated commit containing repository SQL files, the Skill never executes them or creates a database-specific update state.
+
+## Review provenance and integration
+
+Verify these cases in an actual Agent session with the installed `gitnexus-review` Skill and available GitNexus tools; offline policy and Git sandbox checks do not establish review execution.
+
+- Missing or mismatched per-Bug review evidence fails before Push and identifies the affected candidate.
+- Combining independently reviewed ranges, integrating onto a different target state, conflict resolution, or Update corrections invokes one review of the final batch's exact base-to-head range. Individual passing reviews alone cannot validate the new combination.
+- A single unchanged range reuses review only with verified matching base, final tree, relevant inputs, and preserved evidence. The handoff-use explanation records that equivalence without treating prior passing tests as this phase's verification.
+- A new confirmed integration regression or material coverage gap is resolved and revalidated before the updated final range is reviewed. An unavailable review or a verdict other than `READY` prevents Push.
+- Frozen Repair Handoffs remain unchanged; new review facts belong to the Update result's existing validation and technical handoff-use fields.

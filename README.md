@@ -4,12 +4,16 @@ This repository contains the Codex Skills used by Agent Party Time Repair and Up
 
 ## Skills
 
-- `agent-party-time-repair-bug` repairs one Bug, validates the change, and creates ordinary local commits. It cannot push or deploy.
+- `XBugRepaire` repairs one Bug, validates the change, and creates ordinary local commits. It cannot push or deploy.
   Backend repairs that need schema or historical-data changes must commit repository SQL files and return their repository-relative paths as `DATABASE_SQL` manual operations; the Skill never executes SQL.
-- `agent-party-time-integrate-update-batch` integrates a frozen Update Batch, validates it, performs an ordinary push, and handles the configured deployment mode.
+- `XUpdate` integrates a frozen Update Batch, validates it, performs an ordinary push, and handles the configured deployment mode.
   It never executes database SQL or derives manual database operations from an integrated diff.
 
 Both Skills require explicit invocation. Codex must not load them implicitly.
+
+`XBugRepaire` invokes the installed `gitnexus-review` Skill for every Bug after local validation and commits, including a no-change repair. It pins the attempt's starting and final commits, resolves confirmed defects and material test gaps, and records review evidence in the existing validation and Repair Handoff fields. `XUpdate` checks that evidence for every frozen candidate and reviews the final combination when integration changes its reviewed context. Review failure or unavailable dependencies prevents success; a review never proves that all unknown risks are absent.
+
+Install GitNexus and the official `gitnexus-review` Skill on every executing machine before using these Skills. xapt does not install or update that external dependency. The Skill must be discoverable by the executing Codex; a missing dependency produces an explicit failure rather than an unreviewed repair. Original acceptance scenarios and derived regression scenarios stay distinct, and derived scenarios require evidence connecting them to the actual diff.
 
 Successful repairs with candidate commits provide a bounded Repair Handoff under the caller-owned Schema. Update checks the frozen handoffs against current facts, then validates the final integrated combination. Historical passing checks are context, not an exemption from this phase's requirements. Technical handoff-use explanations stay separate from shared business summaries.
 
@@ -28,7 +32,10 @@ npm test
 ```
 
 CI also runs the Codex `skill-creator` frontmatter rules through `scripts/codex-quick-validate.py`.
+The two user-selected invocation names `XBugRepaire` and `XUpdate` are explicit naming exceptions in these checks; the actual Codex loader accepts both case-sensitive names. All other frontmatter, path, and explicit-invocation checks remain required.
 
 Evals must use temporary repositories, fake remotes, and commands without external side effects. They must not push to a real remote or run a real deployment.
 
 Real Agent acceptance is owned by the product repository's `eval:handoff` entry point. It loads the actual Skills into isolated Node and Python worktrees with local fake remotes, retains command traces and outcomes, and compares matched baseline/current runs. The offline checks above do not establish that an Agent follows the handoff or avoids duplicate work. Existing Tasks retain their original Bundle; contract cutover requires a matched Server/xapt/Skill combination and explicit handling of unfinished old Tasks.
+
+After this rename, deploy the matched Server/xapt source and run `xapt skills update` to select the new names for new Tasks. Existing Tasks keep their original names and immutable Bundles; they do not acquire this review requirement retroactively. Complete old Tasks under their pinned rules or explicitly start new Tasks when the new review workflow is required. Do not rewrite their bindings or modify installed historical Bundles.

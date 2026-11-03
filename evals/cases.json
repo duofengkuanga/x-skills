@@ -1,5 +1,5 @@
 {
-  "agent-party-time-repair-bug": {
+  "XBugRepaire": {
     "required": [
       "Do not push or deploy.",
       "Do not amend, squash, rebase, rewrite history, or force-update a ref.",
@@ -17,7 +17,7 @@
       "automatically input Y"
     ]
   },
-  "agent-party-time-integrate-update-batch": {
+  "XUpdate": {
     "required": [
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
