@@ -6,7 +6,7 @@ This repository contains the Codex Skills used by Agent Party Time Repair and Up
 
 - `XBugRepaire` repairs one Bug, validates the change, and creates ordinary local commits. It cannot push or deploy.
   Backend repairs that need schema or historical-data changes must commit repository SQL files and return their repository-relative paths as `DATABASE_SQL` manual operations; the Skill never executes SQL.
-- `XUpdate` integrates a frozen Update Batch, validates it, performs an ordinary push, and handles the configured deployment mode.
+- `XUpdate` integrates a frozen Update Batch, validates it, performs an ordinary push, and runs the configured deployment script.
   It never executes database SQL or derives manual database operations from an integrated diff.
 
 Both Skills require explicit invocation. Codex must not load them implicitly.

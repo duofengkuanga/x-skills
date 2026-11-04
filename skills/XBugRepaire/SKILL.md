@@ -7,6 +7,9 @@ description: "Repair one Agent Party Time Bug from an xapt Execution Brief, vali
 
 Complete exactly one Bug from the Execution Brief. Treat each phase boundary below as a gate: advance only when its completion criterion is met.
 
+
+When the Brief contains `engineeringWorkspaces`, treat every alias as a participating engineering. Use xapt's local directory mapping, with the current directory as `repo-1` for a one-member scope. Read each engineering's own rules and use its own runtime and Git history. Investigate the complete Bug in the same Session and return the required `repositories` result for every alias. Use each mapped `baseCommit` as the original baseline. Review and return the complete unshipped commit range from that baseline through the current HEAD, including work preserved after a failed turn. Use an empty commit list for an unchanged engineering and preserve manual database operations and handoff evidence under the engineering that owns them. A failure in any engineering keeps the entire Bug in the failure path.
+
 ## Execution contract
 
 - The initial Execution Brief is the task data for this Codex Task. Later messages may add facts, retry instructions, or responsible-developer recovery instructions for the same failed Repair Session; they do not start a different Bug.
@@ -27,6 +30,9 @@ Complete exactly one Bug from the Execution Brief. Treat each phase boundary bel
 5. Inspect the relevant implementation and test seam before editing.
 
 Batch independent rule, Git, runtime, and validation-entry reads. Check tool availability once, including the installed `gitnexus-review` Skill and GitNexus tools; use the working repository entry points for the rest of the Session. Missing review dependencies end the repair as `FAILED` with the missing dependency and next action; self-review does not substitute for invoking the Skill.
+
+For Node commands, select the current worktree's runtime from `.nvmrc` or its other runtime declaration and verify it with `node --version`. Reuse compatible linked dependencies for ordinary checks. Before installing, removing, or upgrading dependencies, detach the worktree's `node_modules` symlink and prepare private dependencies with the repository's install command. If Babel Register needs a writable cache, use a path inside this worktree in a verified ignored cache directory, such as `.umi/.cache` for the Umi test build.
+
 
 **Gate:** the worktree identity, current Git state, Bug boundary, available evidence, and unrelated work to preserve are all accounted for. If the worktree is unsafe, inconsistent, or unverifiable, return `FAILED`. Do not create or replace the worktree.
 
@@ -72,7 +78,7 @@ When a backend repair requires a schema change or historical-data correction:
 - Do not push or deploy.
 - Do not amend, squash, rebase, rewrite history, or force-update a ref.
 - Preserve unrelated work and leave no successful repair change uncommitted.
-- Return only commit SHAs created by this repair, in creation order.
+- For a single-directory Brief, return only commit SHAs created by this repair, in creation order. For a grouped Brief, return the cumulative range for each engineering.
 
 **Gate:** each repair change and database handoff is covered by a verified new commit, or the validated target needed no change. Unrelated work remains intact.
 
@@ -100,7 +106,7 @@ For `COMPLETED`:
 - Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms that the target branch already contains the required fix.
 - Report at most five concise changes and five validation results. Add validation detail only when the name alone is insufficient.
 - Report at most three concise warnings.
-- Return the exact verified SHA of every commit created by this repair.
+- Return the exact verified SHA of every candidate commit in the applicable range.
 - Use full Git object IDs verified in the current worktree, never abbreviated SHAs.
 - Return `manualOperations` for every manual database handoff. Use `DATABASE_SQL` and the exact repository-relative SQL file paths; otherwise return an empty array.
 - Return an empty commit array only when validation confirms that the target branch already contains the required fix, `completionKind` is `TARGET_ALREADY_FIXED`, and no change or commit is needed.

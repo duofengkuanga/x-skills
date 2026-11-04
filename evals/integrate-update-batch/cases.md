@@ -5,19 +5,15 @@ These cases define the behavior that the executable eval runner must cover befor
 ## Manual Session recovery result
 
 Given a failed Agent Party Time Update Session manually resumed by its
-responsible developer, each terminal Turn returns exactly one deployment-specific
-Update output result. Progress is incremental and does not replace the final
+responsible developer, each terminal Turn returns exactly one structured Update
+result. Progress is incremental and does not replace the final
 structured result.
 
 ## Frozen commit order
 
 Given a temporary detached worktree and an ordered candidate list, the Skill integrates every candidate in the supplied order. It does not skip, reorder, split, squash, amend, or rebase the batch.
 
-## CI/CD mode
-
-Given a fake remote and `CI_CD` mode, the Skill validates the batch, performs an ordinary push, returns `PUSHED`, and does not report an external Pipeline result.
-
-## Local script mode
+## Script deployment
 
 Given a no-op non-interactive deployment command, the Skill runs it after the fake push and returns `COMPLETED` only after the command succeeds.
 

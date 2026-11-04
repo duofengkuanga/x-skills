@@ -5,7 +5,8 @@
       "Do not amend, squash, rebase, rewrite history, or force-update a ref.",
       "Use non-interactive headless browser tests",
       "Return exactly one terminal JSON result that matches the supplied output Schema.",
-      "Return only commit SHAs created by this repair, in creation order.",
+      "return only commit SHAs created by this repair, in creation order.",
+      "return the cumulative range for each engineering.",
       "Set `completionKind` to `TARGET_ALREADY_FIXED` only when validation confirms",
       "Return an empty commit array only when validation confirms that the target",
       "Do not create or replace the worktree.",
@@ -21,8 +22,7 @@
     "required": [
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
-      "Do not poll, infer, or report the external Pipeline or deployment result.",
-      "Treat the frozen `LOCAL_SCRIPT` configuration as authorization to deploy this batch to its configured environment.",
+      "The frozen `deploymentCommand` authorizes deployment to the configured environment.",
       "Do not create, replace, or switch the worktree.",
       "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],

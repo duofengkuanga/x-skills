@@ -14,12 +14,11 @@ const root = mkdtempSync(join(tmpdir(), 'x-skills-eval-'));
 try {
   repairEval(join(root, 'repair'));
   repairAlreadyFixedEval(join(root, 'repair-already-fixed'));
-  updateCiCdEval(join(root, 'update-ci-cd'));
   updateLocalScriptEval(join(root, 'update-local-script'));
   updateInteractiveScriptEval(join(root, 'update-interactive-script'));
   updateValidationFailureEval(join(root, 'update-validation-failure'));
   updateRejectedPushEval(join(root, 'update-rejected-push'));
-  console.log('Passed 7 sandbox Git and deployment-mode evals.');
+  console.log('Passed 6 sandbox Git and deployment evals.');
 } finally {
   rmSync(root, { recursive: true, force: true });
 }
@@ -79,20 +78,6 @@ function repairAlreadyFixedEval(directory) {
     throw new Error('Already-fixed Repair eval changed the remote ref');
 }
 
-function updateCiCdEval(directory) {
-  const fixture = updateFixture(directory);
-  integrateFrozenCandidates(fixture);
-  run(['validate.mjs'], directory);
-  git(['push', 'origin', 'HEAD:main'], directory);
-  const outcome = 'PUSHED';
-
-  assertCandidateOrder(fixture);
-  if (outcome !== 'PUSHED')
-    throw new Error('CI_CD eval did not stop at PUSHED');
-  if (readFileSync(join(directory, 'external-deployment.txt'), 'utf8') !== 'not-run\n')
-    throw new Error('CI_CD eval inferred or ran an external deployment');
-}
-
 function updateLocalScriptEval(directory) {
   const fixture = updateFixture(directory);
   integrateFrozenCandidates(fixture);
@@ -103,13 +88,14 @@ function updateLocalScriptEval(directory) {
     join(directory, 'deployment.mjs'),
     "import { writeFileSync } from 'node:fs';\nwriteFileSync('deployment-result.txt', 'completed\\n');\n",
   );
+  assertCandidateOrder(fixture);
   const deployment = runDeployment(command, directory);
   const outcome = deployment.status === 0 ? 'COMPLETED' : 'FAILED';
 
   if (outcome !== 'COMPLETED')
-    throw new Error('LOCAL_SCRIPT eval did not complete after the exact command');
+    throw new Error('script deployment eval did not complete after the exact command');
   if (readFileSync(join(directory, 'deployment-result.txt'), 'utf8') !== 'completed\n')
-    throw new Error('LOCAL_SCRIPT eval did not execute the supplied command');
+    throw new Error('script deployment eval did not execute the supplied command');
 }
 
 function updateInteractiveScriptEval(directory) {
@@ -126,7 +112,7 @@ function updateInteractiveScriptEval(directory) {
   const outcome = deployment.status === 0 ? 'COMPLETED' : 'FAILED';
 
   if (outcome !== 'FAILED')
-    throw new Error('Interactive LOCAL_SCRIPT eval accepted input');
+    throw new Error('Interactive script deployment eval accepted input');
 }
 
 function updateValidationFailureEval(directory) {
@@ -138,7 +124,7 @@ function updateValidationFailureEval(directory) {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   });
-  const outcome = validation.status === 0 ? 'PUSHED' : 'FAILED';
+  const outcome = validation.status === 0 ? 'UNEXPECTED_SUCCESS' : 'FAILED';
   const remoteAfter = git(['rev-parse', 'refs/heads/main'], fixture.remote);
 
   if (outcome !== 'FAILED')
@@ -160,7 +146,7 @@ function updateRejectedPushEval(directory) {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   });
-  const outcome = push.status === 0 ? 'PUSHED' : 'FAILED';
+  const outcome = push.status === 0 ? 'UNEXPECTED_SUCCESS' : 'FAILED';
   const remoteAfter = git(['rev-parse', 'refs/heads/main'], fixture.remote);
 
   if (outcome !== 'FAILED') throw new Error('Rejected push did not fail');
@@ -175,11 +161,7 @@ function updateFixture(directory) {
     join(directory, 'validate.mjs'),
     "import { readFileSync } from 'node:fs';\nconst value = readFileSync('order.txt', 'utf8');\nif (value !== 'base\\nfirst\\n') process.exit(1);\nif (readFileSync('second.txt', 'utf8') !== 'second\\n') process.exit(1);\n",
   );
-  writeFileSync(join(directory, 'external-deployment.txt'), 'not-run\n');
-  git(
-    ['add', 'order.txt', 'validate.mjs', 'external-deployment.txt'],
-    directory,
-  );
+  git(['add', 'order.txt', 'validate.mjs'], directory);
   git(['commit', '-m', 'base'], directory);
   git(['branch', '-M', 'main'], directory);
   git(['push', '-u', 'origin', 'main'], directory);
