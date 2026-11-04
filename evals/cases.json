@@ -22,7 +22,7 @@
     "required": [
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
-      "The frozen `deploymentCommand` authorizes deployment to the configured environment.",
+      "The authorized command for each deployment is frozen in the Brief.",
       "Do not create, replace, or switch the worktree.",
       "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
