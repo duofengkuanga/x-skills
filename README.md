@@ -11,6 +11,8 @@ This repository contains the Codex Skills used by Agent Party Time Repair and Up
 
 `XHandoff` defines the shared discovery and handoff rules. Repair and Update load its verified file from their fixed Skill generation.
 
+Each engineering keeps its version-controlled execution convention at `.xapt/README.md`. The Skills read this fixed path directly; no convention link in `AGENTS.md` is required. Keep runtime, validation, delivery and recovery guidance there, linking existing repository documentation for detail. The single `xapt-delivery` block belongs in this file and its commands run from the repository root.
+
 `XBugRepaire` invokes the installed `gitnexus-review` Skill for every Bug after local validation and commits, including a no-change repair. It pins the attempt's starting and final commits, resolves confirmed defects and material test gaps, and records review evidence in the existing validation and Repair Handoff fields. `XUpdate` checks that evidence for every frozen candidate and reviews the final combination when integration changes its reviewed context. Review failure or unavailable dependencies prevents success; a review never proves that all unknown risks are absent.
 
 Install GitNexus and the official `gitnexus-review` Skill on every executing machine before using these Skills. xapt does not install or update that external dependency. The Skill must be discoverable by the executing Codex; a missing dependency produces an explicit failure rather than an unreviewed repair. Original acceptance scenarios and derived regression scenarios stay distinct, and derived scenarios require evidence connecting them to the actual diff.

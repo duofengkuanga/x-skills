@@ -9,9 +9,9 @@ Use this companion from the same fixed generation as the executing Skill. Keep t
 
 ## Establish the engineering convention
 
-In each participating worktree, read the root AGENTS.md and its single standalone `[工程执行约定](repository-relative.md)` link. Read the linked document before choosing repair checks or planning delivery. Keep the path and Git revision in technical evidence. A missing, conflicting, or broken pointer blocks the affected execution.
+In each participating worktree, read `.xapt/README.md` from the repository root before choosing repair checks or planning delivery. This version-controlled file is the fixed engineering convention entry; discovery is independent of AGENTS.md. Read any referenced repository documentation needed for the current phase. Keep the convention path and Git revision in technical evidence. A missing or unreadable `.xapt/README.md` blocks the affected execution with that exact path.
 
-Update matches the Brief's `environmentKey` exactly against the convention's single `xapt-delivery` block. Each environment must have a unique key and exact deploy and read-only verify commands. The block also defines the preparation command. Check the environment and the required entries before integration or Push. After integration, reread the entries at the final committed HEAD and invalidate evidence if relevant inputs changed.
+Update matches the Brief's `environmentKey` exactly against the single `xapt-delivery` block in `.xapt/README.md`. Each environment must have a unique key and exact deploy and read-only verify commands. The block also defines the preparation command. Run these commands from the repository root. Check the environment and the required entries before integration or Push. After integration, reread the entries at the final committed HEAD and invalidate evidence if relevant inputs changed.
 
 ## Produce a Repair Handoff
 
