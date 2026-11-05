@@ -22,7 +22,7 @@
     "required": [
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
-      "Use the exact command from the committed convention",
+      "Use the exact command from the current local convention",
       "Do not create, replace, or switch the worktree.",
       "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
