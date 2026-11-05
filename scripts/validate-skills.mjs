@@ -27,7 +27,7 @@ for (const skillName of skillNames) {
   );
   assert(
     (/^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(skillName) ||
-      ['XBugRepaire', 'XUpdate'].includes(skillName)) &&
+      ['XBugRepaire', 'XUpdate', 'XHandoff'].includes(skillName)) &&
       skillName.length <= 64,
     `${skillName}: 名称格式无效`,
   );

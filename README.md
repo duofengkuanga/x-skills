@@ -6,10 +6,10 @@ This repository contains the Codex Skills used by Agent Party Time Repair and Up
 
 - `XBugRepaire` repairs one Bug, validates the change, and creates ordinary local commits. It cannot push or deploy.
   Backend repairs that need schema or historical-data changes must commit repository SQL files and return their repository-relative paths as `DATABASE_SQL` manual operations; the Skill never executes SQL.
-- `XUpdate` integrates a frozen Update Batch, validates it, performs an ordinary push, and runs the configured deployment script.
+- `XUpdate` integrates a frozen Update Batch, validates it, performs an ordinary push, and runs the deployment entry from each engineering convention.
   It never executes database SQL or derives manual database operations from an integrated diff.
 
-Both Skills require explicit invocation. Codex must not load them implicitly.
+`XHandoff` defines the shared discovery and handoff rules. Repair and Update load its verified file from their fixed Skill generation.
 
 `XBugRepaire` invokes the installed `gitnexus-review` Skill for every Bug after local validation and commits, including a no-change repair. It pins the attempt's starting and final commits, resolves confirmed defects and material test gaps, and records review evidence in the existing validation and Repair Handoff fields. `XUpdate` checks that evidence for every frozen candidate and reviews the final combination when integration changes its reviewed context. Review failure or unavailable dependencies prevents success; a review never proves that all unknown risks are absent.
 
@@ -32,7 +32,7 @@ npm test
 ```
 
 CI also runs the Codex `skill-creator` frontmatter rules through `scripts/codex-quick-validate.py`.
-The two user-selected invocation names `XBugRepaire` and `XUpdate` are explicit naming exceptions in these checks; the actual Codex loader accepts both case-sensitive names. All other frontmatter, path, and explicit-invocation checks remain required.
+`XBugRepaire`, `XUpdate` and `XHandoff` are explicit case-sensitive naming exceptions. All other frontmatter, path, and explicit-invocation checks remain required.
 
 Evals must use temporary repositories, fake remotes, and commands without external side effects. They must not push to a real remote or run a real deployment.
 

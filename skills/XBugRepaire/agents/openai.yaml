@@ -1,4 +1,4 @@
-# xapt-execution-protocol: person-agent-repair-v1
+# xapt-execution-protocol: engineering-workflow-v1
 interface:
   display_name: "XBugRepaire"
   short_description: "修复一个 Agent Party Time Bug，验证并创建本地 Commit"

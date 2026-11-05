@@ -1,6 +1,7 @@
 export const skillNames = [
   'XBugRepaire',
   'XUpdate',
+  'XHandoff',
 ];
 
 export function parseFrontmatter(text, file) {

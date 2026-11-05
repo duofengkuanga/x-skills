@@ -22,7 +22,7 @@
     "required": [
       "Integrate every candidate commit in the frozen order.",
       "Do not use force push.",
-      "The authorized command for each deployment is frozen in the Brief.",
+      "Use the exact command from the committed convention",
       "Do not create, replace, or switch the worktree.",
       "Never execute SQL, DDL, DML, migrations, or historical-data corrections."
     ],
@@ -30,5 +30,13 @@
       "automatically input Y",
       "force push the target branch"
     ]
+  },
+  "XHandoff": {
+    "required": [
+      "Use this companion from the same fixed generation",
+      "Attach a handoff only to a successful committed candidate",
+      "Match each handoff to its frozen candidate commits and engineering."
+    ],
+    "forbidden": []
   }
 }

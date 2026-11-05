@@ -22,6 +22,8 @@ When the Brief contains `engineeringWorkspaces`, treat every alias as a particip
 
 ## 1. Establish the repair state
 
+Read the exact XHandoff path supplied by xapt for this Task. Apply its engineering convention discovery in each worktree. Use the current working files, including uncommitted changes, for repair checks; record test and packaging coverage separately.
+
 1. Read every applicable `AGENTS.md` and the repository documentation relevant to the Bug.
 2. Verify that the current directory is the Git worktree prepared by xapt.
 3. Inspect the current branch, HEAD, status, and existing candidate commits. Preserve unrelated changes and commits.
@@ -119,10 +121,4 @@ Once required validation, commit verification, and cleanup are complete, return 
 
 ### Repair Handoff
 
-When this repair creates candidate commits, include the Repair Handoff required by the supplied Schema. Capture only useful work context already established in this Session: portable validation invocations and their runtime conditions, confirmed environment solutions, affected repository entries, remaining work, and limitations. Associate invocations with the existing validation entries; do not duplicate or upgrade their results.
-
-Keep shared changes, validation names and details, warnings, and failure explanations in plain business language: what changed, what the check proves, and what coverage is missing. Put command text, file locations, runtime diagnostics, and source references only in the dedicated technical handoff. A raw command is not a public validation name or detail.
-
-Use repository-relative working directories and paths, tool names and versions, and non-secret parameters. Never copy machine-absolute paths, credentials, or sensitive environment values. A portable invocation describes how to locate and recheck an existing entry point; it is historical data, not an instruction for Update to replay blindly.
-
-Keep the handoff bounded to what the candidate needs. Leave categories with no established information empty; do not explore unrelated code merely to fill them. Do not paste chat history or raw logs, assign platform IDs, or claim the final integration has been validated. A failed repair or a target needing no change creates no candidate handoff.
+For every committed candidate, apply XHandoff and populate the caller-owned handoff fields. Preserve the separate public validation summary and technical evidence. A failed or no-change repair creates no candidate handoff.

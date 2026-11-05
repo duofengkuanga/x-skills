@@ -1,4 +1,4 @@
-# xapt-execution-protocol: script-deployment-v1
+# xapt-execution-protocol: engineering-workflow-v1
 interface:
   display_name: "XUpdate"
   short_description: "集成并验证 Agent Party Time 更新批次，然后 Push 和部署"

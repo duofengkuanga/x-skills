@@ -11,7 +11,7 @@ import yaml
 MAX_SKILL_NAME_LENGTH = 64
 ALLOWED_PROPERTIES = {"name", "description", "license", "allowed-tools", "metadata"}
 # User-selected invocation names, accepted by the Codex skill loader.
-EXPLICIT_SKILL_NAMES = {"XBugRepaire", "XUpdate"}
+EXPLICIT_SKILL_NAMES = {"XBugRepaire", "XUpdate", "XHandoff"}
 
 
 def validate_skill(skill_path: str) -> tuple[bool, str]:

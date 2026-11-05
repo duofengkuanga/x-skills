@@ -1,0 +1,6 @@
+interface:
+  display_name: "XHandoff"
+  short_description: "生成并核实候选提交的结构化修复交接"
+  default_prompt: "按固定规则包中的 $XHandoff 处理候选交接。"
+policy:
+  allow_implicit_invocation: false

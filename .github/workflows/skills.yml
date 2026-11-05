@@ -26,3 +26,4 @@ jobs:
       - run: pip install --requirement requirements-ci.txt
       - run: python scripts/codex-quick-validate.py skills/XBugRepaire
       - run: python scripts/codex-quick-validate.py skills/XUpdate
+      - run: python scripts/codex-quick-validate.py skills/XHandoff
