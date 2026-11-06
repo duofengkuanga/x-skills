@@ -76,6 +76,10 @@ Batch independent rule, Git, runtime, and validation-entry reads. Check tool ava
 
 Resolve confirmed integration defects and material coverage gaps, rerun affected checks, and review the changed final range before Push. Missing review dependencies, missing provenance, or a verdict other than `READY` ends Update as `FAILED` before Push. Preserve the original frozen handoffs; record the final review and any newly derived regression scenarios in this Update's validation and technical handoff-use fields. The Skill's review is an intermediate result, not a replacement for the caller-owned terminal JSON.
 
+Reconcile the tester scopes against this final review. Return exactly one `testingScopes` entry for each frozen candidate position in each changed engineering, using the supplied alias and position unchanged. Retain its original acceptance scenarios, recheck its derived regression scenarios, and add evidence-backed integration effects only to the candidates they affect. Each scope's head must equal that engineering's final deployed commit; retain the exact review base and READY verdict. Keep the title, operation, expected result, derived reason and coverage limitations business-readable; put repository paths and source evidence only in the technical fields. A derived scenario is a regression check, not an assertion of a newly introduced defect. Missing analysis cannot become a clean scope, and unrelated Bugs' points cannot be copied into the current Bug. Preserve the frozen Repair scopes as historical evidence; publish the reconciled scopes only in the successful final result.
+
+Frozen `unchangedTestingScopes` preserve the same Bug's original acceptance points and coverage limits from engineering entries that needed no repair. Include those requirements when assessing the integrated behavior; the Server retains them with the final tester checklist. Attribute newly derived integration checks to the changed engineering that caused them. Preserve UNCHANGED delivery facts for untouched engineering entries.
+
 ## 4. Push
 
 - Push only the complete, validated batch to the target branch.

@@ -52,3 +52,9 @@ Verify these cases in an actual Agent session with the installed `gitnexus-revie
 - A single unchanged range reuses review only with verified matching base, final tree, relevant inputs, and preserved evidence. The handoff-use explanation records that equivalence without treating prior passing tests as this phase's verification.
 - A new confirmed integration regression or material coverage gap is resolved and revalidated before the updated final range is reviewed. An unavailable review or a verdict other than `READY` prevents Push.
 - Frozen Repair Handoffs remain unchanged; new review facts belong to the Update result's existing validation and technical handoff-use fields.
+
+## Final tester checklist
+
+Given two frozen Bugs and multiple engineering entries, reconcile each candidate's checklist against the final integrated GitNexus Review. Return each candidate position/engineering pair exactly once and bind its head to that engineering's deployed commit. Add integration-derived checks only to affected candidates; keep original frozen scopes unchanged. A stale head, omitted candidate, duplicate pair or unknown engineering cannot produce successful delivery. Public coverage limits remain explicit. Real Agent acceptance is required for attribution and review invocation; application tests prove the structural guards and projection.
+
+When an engineering needs no repair, its frozen original acceptance points and limits remain available in unchangedTestingScopes and in the final tester checklist, without inventing a deployment for that engineering.

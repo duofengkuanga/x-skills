@@ -54,3 +54,11 @@ These cases require an actual Agent session; policy text checks and the scripted
 - When review discovers a reachable regression introduced by the repair, correct it with an additional ordinary commit, rerun affected validation, and review the updated full range. A prior verdict for a different head does not satisfy the gate.
 - When the Skill, GitNexus tools, original base, or review evidence is unavailable, return `FAILED` with the specific missing prerequisite. Do not replace the review with an unsupported success claim.
 - A pre-existing issue or an unverified caller must not become a confirmed new defect. Original and derived scenarios retain their distinct attribution, and any incomplete coverage remains explicit in the permitted result fields.
+
+## Tester checklist
+
+Real Agent acceptance is required for scenario attribution; application tests cover structure, version binding, projection and rendering.
+
+- Given a fix to logic shared by single and batch operations, return the original acceptance operation plus a DERIVED batch-operation check only after verifying the actual diff, caller and reachable scenario. Keep its business-readable reason separate from source evidence and exact review commits.
+- An already-fixed target has equal review base/head and original acceptance points only. Missing review dependencies produce failure, not a fabricated checklist.
+- Public limitations retain uncovered relevant behaviors; consolidating bounded lists must not silently omit them.
